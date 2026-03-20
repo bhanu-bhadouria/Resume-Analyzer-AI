@@ -47,7 +47,7 @@ An AI-powered ATS (Applicant Tracking System) Resume Analyzer that evaluates how
 ## Installation
 
 ```bash
-git clone https://github.com/bhanu-bhadouria/Resume-Analyzer-AI.git
+git clone https://github.com/YOUR_USERNAME/resume-analyzer-ai.git
 cd resume-analyzer-ai
 
 pip install -r requirements.txt
