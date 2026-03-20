@@ -1,0 +1,19 @@
+Sample Job Description:
+
+Strong knowledge of Python, SQL
+
+Experience with Pandas, NumPy, Scikit-learn
+
+Understanding of machine learning algorithms
+
+Experience in data visualization tools (Power BI preferred)
+
+Knowledge of statistics and data analysis
+
+Nice to Have
+
+Experience with real-time data pipelines
+
+Knowledge of cloud platforms (AWS/GCP)
+
+Strong problem-solving skills
