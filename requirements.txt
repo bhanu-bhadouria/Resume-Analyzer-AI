@@ -1,0 +1,7 @@
+streamlit
+spacy
+PyPDF2
+sentence-transformers
+scikit-learn
+openai
+python-dotenv
