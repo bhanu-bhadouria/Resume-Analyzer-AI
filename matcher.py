@@ -80,35 +80,50 @@ def semantic_similarity(resume, jd):
 
 
 # Final scoring
-def match_score(resume, jd):
+def match_score(resume, job_profile):
+    # Normalize resume
     resume = normalize_text(resume)
-    jd = normalize_text(jd)
 
+    # Extract resume keywords
     resume_keywords = filter_keywords(extract_keywords(resume))
-    jd_keywords = filter_keywords(extract_keywords(jd))
 
+    # Extract job profile fields
+    job_skills = set([normalize_text(s) for s in job_profile.get("skills", [])])
+    job_keywords = set([normalize_text(k) for k in job_profile.get("keywords", [])])
+    job_responsibilities = set([normalize_text(r) for r in job_profile.get("responsibilities", [])])
+
+    # Combine all job requirements
+    jd_keywords = filter_keywords(job_skills | job_keywords | job_responsibilities)
+
+    # Match + Missing
     match = resume_keywords.intersection(jd_keywords)
     missing_keywords = jd_keywords - resume_keywords
 
     if len(jd_keywords) == 0:
         return 0, match, missing_keywords
 
-    # Keyword score (40%)
+    # Keyword Score (40%)
     keyword_score = (len(match) / len(jd_keywords)) * 40
 
-    # Skill score (30%)
+    # Skill Score (30%)
     important_skills = [
         "python", "sql", "machine learning",
         "pandas", "numpy", "power bi", "data analysis"
     ]
 
-    skill_match = sum(1 for skill in important_skills if skill in resume and skill in jd)
+    skill_match = sum(
+        1 for skill in important_skills
+        if skill in resume and skill in " ".join(job_skills)
+    )
+
     skill_score = (skill_match / len(important_skills)) * 30
 
-    # Semantic score (30%)
-    semantic_score = semantic_similarity(resume, jd) * 30
+    # Semantic Score (30%)
+    job_text = " ".join(list(job_skills) + list(job_keywords) + list(job_responsibilities))
+    semantic_score_val = semantic_similarity(resume, job_text) * 30
 
-    final_score = keyword_score + skill_score + semantic_score
+    # Final Score
+    final_score = keyword_score + skill_score + semantic_score_val
     final_score = min(final_score, 100)
 
     return round(final_score, 2), match, missing_keywords
